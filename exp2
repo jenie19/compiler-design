@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LINE_LENGTH 256
+
+int is_comment(const char *line) {
+    if (strstr(line, "//") == line) {
+        return 1; // Single line comment
+    }
+    if (strstr(line, "/*") != NULL) {
+        if (strstr(line, "*/") != NULL) {
+            return 1; // Multi-line comment
+        }
+    }
+    return 0; // Not a comment
+}
+
+int main() {
+    char line[MAX_LINE_LENGTH];
+
+    printf("Enter a line of code: ");
+    fgets(line, sizeof(line), stdin);
+
+    if (is_comment(line)) {
+        printf("The line is a comment.\n");
+    } else {
+        printf("The line is not a comment.\n");
+    }
+
+    return 0;
+}
