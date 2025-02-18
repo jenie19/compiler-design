@@ -1,0 +1,25 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+\n      { printf("%d: ", ++line_number); }
+.       { putchar(yytext[0]); }
+%% 
+
+int main(int argc, char **argv) {
+    FILE *fp;
+    if (argc > 1) {
+        fp = fopen(argv[1], "r");
+        if (!fp) {
+            perror("File opening failed");
+            return 1;
+        }
+        yyin = fp;
+    }
+    yylex();
+    fclose(fp);
+    return 0;
+}
+
+int line_number = 0;
