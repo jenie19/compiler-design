@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminateLeftFactoring(char productions[][10], int numProductions) {
+    for (int i = 0; i < numProductions; i++) {
+        for (int j = i + 1; j < numProductions; j++) {
+            if (productions[i][0] == productions[j][0]) {
+                printf("Left factoring detected between %s and %s\n", productions[i], productions[j]);
+                // Implement left factoring logic here
+            }
+        }
+    }
+}
+
+int main() {
+    char productions[10][10] = {"A -> aB", "A -> aC", "B -> b", "C -> c"};
+    int numProductions = 4;
+
+    eliminateLeftFactoring(productions, numProductions);
+    return 0;
+}
