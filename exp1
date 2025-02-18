@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX_IDENTIFIER_LENGTH 100
+#define MAX_CONSTANT_LENGTH 100
+
+void ignoreWhitespace(FILE *fp) {
+    char ch;
+    while ((ch = fgetc(fp)) != EOF) {
+        if (!isspace(ch)) {
+            ungetc(ch, fp);
+            break;
+        }
+    }
+}
+
+void identifyToken(FILE *fp) {
+    char identifier[MAX_IDENTIFIER_LENGTH];
+    char constant[MAX_CONSTANT_LENGTH];
+    char ch;
+    int i = 0;
+
+    while ((ch = fgetc(fp)) != EOF) {
+        if (isalpha(ch)) {
+            i = 0;
+            do {
+                if (i < MAX_IDENTIFIER_LENGTH - 1) {
+                    identifier[i++] = ch;
+                }
+                ch = fgetc(fp);
+            } while (isalnum(ch) || ch == '_');
+            identifier[i] = '\0';
+            printf("Identifier: %s\n", identifier);
+            ungetc(ch, fp);
+        } else if (isdigit(ch)) {
+            i = 0;
+            do {
+                if (i < MAX_CONSTANT_LENGTH - 1) {
+                    constant[i++] = ch;
+                }
+                ch = fgetc(fp);
+            } while (isdigit(ch));
+            constant[i] = '\0';
+            printf("Constant: %s\n", constant);
+            ungetc(ch, fp);
+        } else if (ch == '/' && (ch = fgetc(fp)) == '/') {
+            while ((ch = fgetc(fp)) != EOF && ch != '\n');
+        } else if (ch == '/' && ch == '*') {
+            while ((ch = fgetc(fp)) != EOF) {
+                if (ch == '*' && (ch = fgetc(fp)) == '/') {
+                    break;
+                }
+            }
+        } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            printf("Operator: %c\n", ch);
+        }
+    }
+}
+
+int main() {
+    FILE *fp = fopen("input.txt", "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Could not open file\n");
+        return 1;
+    }
+
+    ignoreWhitespace(fp);
+    identifyToken(fp);
+
+    fclose(fp);
+    return 0;
+}
