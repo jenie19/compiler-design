@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int isValidGrammar(const char *str) {
+    int length = strlen(str);
+    if (length == 0) return 0;
+
+    // Check if the first character is uppercase
+    if (!isupper(str[0])) return 0;
+
+    // Check for proper punctuation at the end
+    if (str[length - 1] != '.' && str[length - 1] != '!' && str[length - 1] != '?') return 0;
+
+    // Check for multiple consecutive spaces
+    for (int i = 1; i < length; i++) {
+        if (isspace(str[i]) && isspace(str[i - 1])) return 0;
+    }
+
+    return 1;
+}
+
+int main() {
+    char input[256];
+    printf("Enter a sentence: ");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = 0; // Remove newline character
+
+    if (isValidGrammar(input)) {
+        printf("The sentence satisfies the grammar rules.\n");
+    } else {
+        printf("The sentence does not satisfy the grammar rules.\n");
+    }
+
+    return 0;
+}
