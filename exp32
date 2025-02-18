@@ -1,0 +1,25 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void yyerror(const char *s);
+int yylex();
+%}
+
+%%
+[http|https]://[a-zA-Z0-9.-]+.[a-zA-Z]{2,}(/[a-zA-Z0-9._%+-]*)* {
+    printf("Valid URL: %s\n", yytext);
+}
+.|\n { /* Ignore other characters */ }
+%% 
+
+int main() {
+    printf("Enter a URL: ");
+    yylex();
+    return 0;
+}
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}exp32
