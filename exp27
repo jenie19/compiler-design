@@ -1,0 +1,27 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+#include          { printf("Token: INCLUDE\n"); }
+<[^>]+>         { printf("Token: HEADER FILE\n"); }
+void            { printf("Token: VOID\n"); }
+main            { printf("Token: MAIN\n"); }
+{              { printf("Token: LEFT BRACE\n"); }
+}              { printf("Token: RIGHT BRACE\n"); }
+int             { printf("Token: INT\n"); }
+[a-zA-Z_][a-zA-Z0-9_]* { printf("Token: IDENTIFIER\n"); }
+[0-9]+          { printf("Token: NUMBER\n"); }
+\"[^\"]*\"      { printf("Token: STRING\n"); }
+;               { printf("Token: SEMICOLON\n"); }
+,               { printf("Token: COMMA\n"); }
+=               { printf("Token: ASSIGNMENT\n"); }
+\n              { /* Ignore new lines */ }
+[ \t]           { /* Ignore whitespace */ }
+.               { printf("Token: UNKNOWN\n"); }
+%%
+
+int main(int argc, char **argv) {
+    yylex();
+    return 0;
+}
