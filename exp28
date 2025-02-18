@@ -1,0 +1,13 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+abc   { printf("ABC"); }
+.     { putchar(yytext[0]); }
+%%
+
+int main(int argc, char **argv) {
+    yylex();
+    return 0;
+}
