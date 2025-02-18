@@ -1,0 +1,41 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+
+%%
+[0-9]+      { yylval = atoi(yytext); return NUMBER; }
+"+"        { return PLUS; }
+"-"        { return MINUS; }
+"*"        { return MULTIPLY; }
+"/"        { return DIVIDE; }
+\n         { return EOL; }
+[ \t]      { /* ignore whitespace */ }
+.          { return yytext[0]; }
+%%
+
+int main(void) {
+    int result;
+    int num1, num2;
+    char op;
+
+    while(1) {
+        printf("Enter expression (e.g., 3 + 4): ");
+        if (yylex() == EOL) break;
+
+        num1 = yylval;
+        op = yytext[0];
+        yylex(); // get the second number
+        num2 = yylval;
+
+        switch(op) {
+            case '+': result = num1 + num2; break;
+            case '-': result = num1 - num2; break;
+            case '*': result = num1 * num2; break;
+            case '/': result = num1 / num2; break;
+            default: printf("Unknown operator\n"); continue;
+        }
+        printf("Result: %d\n", result);
+    }
+    return 0;
+}
