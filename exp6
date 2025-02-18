@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminateLeftRecursion(char *productions[], int n) {
+    for (int i = 0; i < n; i++) {
+        char *prod = productions[i];
+        char nonTerminal = prod[0];
+        char newProd[10];
+        int j = 0, k = 0;
+        int hasLeftRecursion = 0;
+
+        // Check for left recursion
+        for (int l = 3; l < strlen(prod); l++) {
+            if (prod[l] == nonTerminal) {
+                hasLeftRecursion = 1;
+                break;
+            }
+        }
+
+        if (hasLeftRecursion) {
+            // Create new production
+            sprintf(newProd, "%c'", nonTerminal);
+            printf("%c -> ", nonTerminal);
+            for (int l = 3; l < strlen(prod); l++) {
+                if (prod[l] != nonTerminal) {
+                    printf("%c%c' | ", prod[l], nonTerminal);
+                }
+            }
+            printf("ε\n"); // Epsilon production
+            printf("%c' -> ", newProd[0]);
+            for (int l = 3; l < strlen(prod); l++) {
+                if (prod[l] == nonTerminal) {
+                    printf("%c' | ", prod[l]);
+                }
+            }
+            printf("ε\n"); // Epsilon production
+        } else {
+            printf("%s\n", prod); // No left recursion
+        }
+    }
+}
+
+int main() {
+    char *productions[] = {
+        "A -> A alpha | beta",
+        "B -> gamma",
+        "C -> C beta | delta"
+    };
+    int n = sizeof(productions) / sizeof(productions[0]);
+    eliminateLeftRecursion(productions, n);
+    return 0;
+}
