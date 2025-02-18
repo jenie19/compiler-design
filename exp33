@@ -1,0 +1,11 @@
+# School Management DOB Validation
+
+%% 
+[0-9]{2}/[0-9]{2}/[0-9]{4}   { printf("Valid DOB: %s\n", yytext); }
+.|\n                        { /* Ignore other characters */ }
+%% 
+
+int main(int argc, char **argv) {
+    yylex();
+    return 0;
+}
