@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int a = 10, b = 5, c = 2;
+    int result;
+
+    // Using PEMDAS order of operations
+    result = a + b * c; // Multiplication before Addition
+    printf("Result of a + b * c: %d\n", result);
+
+    result = (a + b) * c; // Parentheses first
+    printf("Result of (a + b) * c: %d\n", result);
+
+    result = a - b + c; // Subtraction and Addition from left to right
+    printf("Result of a - b + c: %d\n", result);
+
+    result = a / b * c; // Division before Multiplication
+    printf("Result of a / b * c: %d\n", result);
+
+    result = a + b - c * a / b; // Mixed operations
+    printf("Result of a + b - c * a / b: %d\n", result);
+
+    return 0;
+}
