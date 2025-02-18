@@ -1,0 +1,25 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+int count = 0;
+char *target_word;
+
+%}
+
+%%
+{target_word} { count++; }
+.|\n    ;
+
+%%
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <word>\n", argv[0]);
+        return 1;
+    }
+    target_word = argv[1];
+    yylex();
+    printf("The word '%s' appears %d times.\n", target_word, count);
+    return 0;
+}
